@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG Web App</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>RAG Web Application</h1>
+    <form id="query-form">
+        <label for="query">Ask a Question:</label>
+        <input type="text" id="query" name="query" required>
+        <button type="submit">Submit</button>
+    </form>
+    <h2>Answer:</h2>
+    <div id="answer"></div>
+
+    <script>
+        $(document).ready(function(){
+            $('#query-form').submit(function(event){
+                event.preventDefault();
+                var query = $('#query').val();
+                
+                $.ajax({
+                    url: '/ask',
+                    method: 'POST',
+                    data: { query: query },
+                    success: function(response) {
+                        $('#answer').text(response.answer);
+                    },
+                    error: function(error) {
+                        $('#answer').text('Error occurred while fetching answer.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
